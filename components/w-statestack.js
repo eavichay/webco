@@ -20,24 +20,42 @@ Slim.tag(
             }
         }
 
-        onCreated() {
-            this.currentState = this.getAttribute('state');
-            this.stack = [];
-            while (this.firstChild) {
-                this.stack.push(this.firstChild);
-                this.removeChild(this.firstChild);
-            }
+        onBeforeCreated() {
+            this._initialize();
         }
 
         setState(newVal) {
             this.setAttribute('state', newVal);
         }
 
+        _initialize() {
+            if (this._created) return;
+            this.currentState = this.getAttribute('state');
+            this.stack = [];
+            while (this.firstChild) {
+                this.stack.push(this.firstChild);
+                this.removeChild(this.firstChild);
+            }
+            this._created = true;
+            this.update();
+        }
+
+        onRemoved() {
+            this._initialize();
+        }
+
+        onAdded() {
+            this._initialize();
+        }
+
         update() {
+            if (!this.stack) {
+                this.onBeforeCreated();
+            }
             this.stack.forEach( child => {
-                if (child.getAttribute && child.getAttribute('state') !== this.currentState && child.parentNode === this) {
+                if (child.getAttribute && child.getAttribute('in-state') !== this.currentState && child.parentNode === this) {
                     this.removeChild(child);
-                } else if (child.getAttribute && child.getAttribute('state') === this.currentState) {
+                } else if (child.getAttribute && child.getAttribute('in-state') === this.currentState) {
                     this.appendChild(child);
                 }
             });

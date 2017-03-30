@@ -9,14 +9,49 @@
     <script src="./assertions.js"></script>
 </head>
 <body>
-    <w-statestack state="state_1">
-        <div id="st1" state="state_1"><span>State 1</span></div>
-        <div id="st1-1" state="state_1"><span>State 1.1</span></div>
-        <div id="st2" state="state_2"><span>State 2</span></div>
-        <div id="st2-2" state="state_2"><span>State 2.2</span></div>
+    <w-statestack id="unit" state="state_1">
+        <div id="st1" in-state="state_1"><span>State 1</span></div>
+        <div id="st1-1" in-state="state_1"><span>State 1.1</span></div>
+        <div id="st2" in-state="state_2"><span>State 2</span></div>
+        <div id="st2-2" in-state="state_2"><span>State 2.2</span></div>
     </w-statestack>
 
+    <test-statestack>
+    </test-statestack>
+
     <script>
+        Slim.tag('test-statestack',
+        `<h1>Test w-statestack</h1>
+        <w-statestack #wss state="1">
+            <div in-state="1">1111</div>
+            <div in-state="2">2222</div>
+            <div in-state="3">3333</div>
+            <div in-state="3">33.3</div>
+            <div in-state="3">
+                <w-statestack #wss2 state="A">
+                    <div in-state="A">AAAA</div>
+                    <div in-state="B">BBBB</div>
+                    <div in-state="C">CCCC</div>
+                </w-statestack>
+                <button click="changeState2">A</button>
+                <button click="changeState2">B</button>
+                <button click="changeState2">C</button>
+            </div>
+        </w-statestack>
+        <button click="changeState">1</button>
+        <button click="changeState">2</button>
+        <button click="changeState">3</button>`,
+        class extends Slim {
+            changeState(e) {
+                this.wss.setState( e.target.textContent );
+            }
+
+            changeState2(e) {
+                this.wss2.setState( e.target.textContent );
+            }
+        });
+
+
         window.unit = document.querySelector('w-statestack');
         assertElement('w-statestack #st1');
         assertElement('w-statestack #st1-1');
@@ -28,7 +63,7 @@
         assertElement('w-statestack #st2');
         assertElement('w-statestack #st2-2');
         window.unit.setAttribute('state', 'state_3');
-        assertNoElement('w-statestack *');
+        assertNoElement('w-statestack#unit *');
         window.unit.setState('state_1');
         assertElement('w-statestack #st1');
         assertElement('w-statestack #st1-1');
