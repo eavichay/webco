@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>w-statestack Test</title>
+
+    <script src="../node_modules/slim-js/Slim.js"></script>
+    <script src="../src/w-statestack.js"></script>
+    <script src="./assertions.js"></script>
+</head>
+<body>
+    <w-statestack state="state_1">
+        <div id="st1" state="state_1"><span>State 1</span></div>
+        <div id="st1-1" state="state_1"><span>State 1.1</span></div>
+        <div id="st2" state="state_2"><span>State 2</span></div>
+        <div id="st2-2" state="state_2"><span>State 2.2</span></div>
+    </w-statestack>
+
+    <script>
+        window.unit = document.querySelector('w-statestack');
+        assertElement('w-statestack #st1');
+        assertElement('w-statestack #st1-1');
+        assertNoElement('w-statestack #st2');
+        assertNoElement('w-statestack #st2-2');
+        window.unit.setState('state_2');
+        assertNoElement('w-statestack #st1');
+        assertNoElement('w-statestack #st1-1');
+        assertElement('w-statestack #st2');
+        assertElement('w-statestack #st2-2');
+        window.unit.setAttribute('state', 'state_3');
+        assertNoElement('w-statestack *');
+        window.unit.setState('state_1');
+        assertElement('w-statestack #st1');
+        assertElement('w-statestack #st1-1');
+        assertNoElement('w-statestack #st2');
+        assertNoElement('w-statestack #st2-2');
+    </script>
+</body>
+</html>
