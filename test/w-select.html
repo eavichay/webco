@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>w-select test</title>
+    <script src="../node_modules/slim-js/Slim.js"></script>
+    <script src="../components/w-select.js"></script>
+    <script src="./assertions.js"></script>
+</head>
+<body>
+    <test-select></test-select>
+    <script>
+
+        Slim.tag('test-select',
+
+        `<w-select #my_select w-options="[[items]]" select="handleSelect" label-key="label" value-key="value"></w-select>`,
+
+        class extends Slim {
+            onBeforeCreated() {
+                window.unit = this;
+                this.items = [
+                    { label: "item 1", value: 1 },
+                    { label: "item 2", value: 2 },
+                    { label: "item 3", value: 3 }
+                ]
+            }
+
+            handleSelect(selection) {
+                console.log(selection.item);
+            }
+
+            onAfterUpdate() {
+                console.log(this.my_select.value);
+            }
+        });
+
+    </script>
+</body>
+</html>

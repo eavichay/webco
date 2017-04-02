@@ -4,8 +4,7 @@
 Slim.tag(
     'w-statestack',
 
-    `
-    `,
+    ``,
 
     class extends Slim {
 
