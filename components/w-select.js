@@ -12,7 +12,6 @@ class extends Slim {
     }
 
     doRender() {
-        if (!this.wOptions) return;
         this.render(`<select #select_element change="handleChange"><option slim-repeat="wOptions" bind value="[[data.${this.valueKey}]]">[[data.${this.labelKey}]]</option></select>`)
     }
 

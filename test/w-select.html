@@ -22,7 +22,10 @@
                     { label: "item 1", value: 1 },
                     { label: "item 2", value: 2 },
                     { label: "item 3", value: 3 }
-                ]
+                ];
+                setTimeout( () => {
+                    this.items.push( {label: "item 4", value: 4 });
+                }, 1000);
             }
 
             handleSelect(selection) {
@@ -32,8 +35,20 @@
             onAfterUpdate() {
                 console.log(this.my_select.value);
             }
+
+            getValue() {
+                return this.my_select.value;
+            }
         });
 
+        assertElement('test-select select');
+        assert( window.unit.getValue().item === window.unit.items[0] );
+//        while (window.unit.items.length ) {
+//            window.unit.items.pop();
+//        }
+//        setTimeout( () => {
+//            assertNoElement('test-select w-select select option');
+//        }, 0);
     </script>
 </body>
 </html>
