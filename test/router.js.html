@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test router</title>
+
+    <script src="../node_modules/slim-js/Slim.js"></script>
+    <script src="../components/w-select.js"></script>
+    <script src="../utils/router.js"></script>
+    <script src="assertions.js"></script>
+</head>
+<body>
+    <test-router></test-router>
+
+    <script>
+        Slim.tag('test-router',
+        `<w-select w-options="[[routes]]" label-key="label" value-key="route" select="handleSelect"></w-select>`,
+        class extends Slim {
+            onBeforeCreated() {
+                this.routes = [
+                    {label: 'about', route: '/about'},
+                    {label: 'home', route: '/home'},
+                    {label: 'product 1', route: '/products/1'},
+                    {label: 'product 2', route: '/products/2'},
+                ];
+
+                Slim.Router
+                    .config({mode: 'history'})
+                    .add(/home/, () => {
+                        console.log('/home');
+                    })
+                    .add(/products\/(.*)/, (pid) => {
+                        console.log(pid);
+                    })
+                    .listen();
+            }
+
+            handleSelect(selection) {
+                Slim.Router.navigate(selection.value);
+            }
+        });
+
+        assert(Slim.Router !== undefined);
+    </script>
+</body>
+</html>
