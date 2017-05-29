@@ -1,6 +1,6 @@
 Slim.tag('w-accordion', class extends Slim {
     get template() {
-        return `<div slim-repeat="sections"><div click="toggle" title="[[data.title]]"></div><div content></div></div>`;
+        return `<div slim-repeat="sections" section><div click="toggle" title="[[data.title]]"></div><div content></div></div>`;
     }
     onBeforeCreated() {
         this.sections = [];
