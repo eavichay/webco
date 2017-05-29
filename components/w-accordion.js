@@ -33,7 +33,6 @@ Slim.tag('w-accordion', class extends Slim {
     }
 
     toggle(e) {
-        console.log(e.target.section);
         this.sections.forEach( section => {
             if (e.target.section === section) {
                 section.element.parentNode.style.height = this.accordionHeight;
