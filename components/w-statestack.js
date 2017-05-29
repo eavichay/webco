@@ -39,10 +39,6 @@ Slim.tag(
             this.update();
         }
 
-        onRemoved() {
-            this._initialize();
-        }
-
         onAdded() {
             this._initialize();
         }

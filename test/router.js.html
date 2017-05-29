@@ -6,6 +6,7 @@
 
     <script src="../node_modules/slim-js/Slim.js"></script>
     <script src="../components/w-select.js"></script>
+    <script src="../components/w-statestack.js"></script>
     <script src="../utils/router.js"></script>
     <script src="assertions.js"></script>
 </head>
@@ -14,7 +15,13 @@
 
     <script>
         Slim.tag('test-router',
-        `<w-select w-options="[[routes]]" label-key="label" value-key="route" select="handleSelect"></w-select>`,
+        `
+        <w-select w-options="[[routes]]" label-key="label" value-key="route" select="handleSelect"></w-select>
+        <w-statestack state="[[currentRoute]]">
+            <div in-state="home">Home</div>
+            <div in-state="product 1" bind>[[currentRoute]]</div>
+        </w-statestack>
+        `,
         class extends Slim {
             onBeforeCreated() {
                 this.routes = [
@@ -28,11 +35,14 @@
                     .config({mode: 'history'})
                     .add(/home/, () => {
                         console.log('/home');
+                        this.currentRoute = 'home';
                     })
                     .add(/products\/(.*)/, (pid) => {
                         console.log(pid);
+                        this.currentRoute = 'product ' + pid;
                     })
-                    .listen();
+                    .listen()
+                    .navigate();
             }
 
             handleSelect(selection) {
