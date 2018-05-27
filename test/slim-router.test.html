@@ -1,0 +1,46 @@
+<html>
+
+  <head>
+    <script src="../node_modules/slim-js/Slim.min.js"></script>
+    <script src="../components/slim-router.js"></script>
+  </head>
+
+  <body>
+
+    <slim-router>
+      <h1 slot="header">Header</h1>
+      <h6 slot="footer">Footer</h6>
+      <div slot="404">
+        <h1>Error 404</h1>
+      </div>
+      <route default component="x-0"></route>
+      <route path="/x1/:whatever/:id" component="x-1" class="big-bang"></route>
+      <route path="/x2" component="x-2" role="super-page"></route>
+    </slim-router>
+
+    <script>
+      customElements.define('x-0', class extends HTMLElement {
+        connectedCallback() {
+          this.attachShadow({ mode: 'open' })
+          this.shadowRoot.innerHTML = '<h1>DEFAULT</h1>';
+        }
+      })
+
+      customElements.define('x-1', class extends HTMLElement {
+        connectedCallback() {
+          this.attachShadow({ mode: 'open' })
+          this.shadowRoot.innerHTML = '<pre>I AM X-1 \n' + JSON.stringify(this.routeParams, null, 2) + '</pre>';
+        }
+      })
+
+      customElements.define('x-2', class extends HTMLElement {
+        connectedCallback() {
+          this.attachShadow({ mode: 'open' })
+          this.shadowRoot.innerHTML = '<pre>I AM X-2 \n' + JSON.stringify(this.routeParams, null, 2) + '</pre>';
+        }
+      })
+    </script>
+
+  </body>
+
+</html>

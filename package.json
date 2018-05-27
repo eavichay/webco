@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/eavichay/webco#readme",
   "dependencies": {
-    "slim-js": "^2.9.8"
+    "slim-js": "^3.2.9"
   }
 }
