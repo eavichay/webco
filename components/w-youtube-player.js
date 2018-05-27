@@ -8,46 +8,40 @@
 Slim.tag('w-youtube-player', class extends Slim {
 
     get template() {
-        return `<div class="slim-youtube-container">
-                    <div id="ytplayer"></div>
-                </div>`;
+        return `
+            <div>
+                <iframe s:id="iframe"
+                    bind:src="getURL(youtubeVideoId)" 
+                    width="100%" height="100%"
+                    frameborder="0"></iframe>
+            </div>
+            <style bind>
+                div {
+                    width: {{playerWidth}};
+                    height: {{playerHeight}};
+                }
+            </style>
+            `;
     }
 
-    onBeforeCreated() {
-        var autoplay = this.getAttribute('autoplay');
-        this.youtubeVideoId = this.getAttribute('video-id');
+    get useShadow() {
+        return true;
+    }
 
+    connectedCallback() {
+        this.autoplay = this.hasAttribute('autoplay');
         this.playerHeight = this.getAttribute('height');
         this.playerWidth = this.getAttribute('width');
-        this.initializeIframeApi();
+        this.youtubeVideoId = this.getAttribute('video-id');
     }
 
+    disconnectedCallback() {
+        this.iframe.src = null;
+    }
 
-    initializeIframeApi() {
-        // Load the IFrame Player API code asynchronously.
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/player_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        //Insert the script once
-        if (!window.YT) {
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        }
-        // Replace the 'ytplayer' element with an <iframe> and
-        // YouTube player after the API code downloads.
-        var player;
-
-        window.onYouTubePlayerAPIReady = () => {
-            player = new YT.Player('ytplayer', {
-                height: this.playerHeight,
-                width: this.playerWidth,
-                videoId: this.youtubeVideoId,
-                playerVars: {
-                    color: this.color || "red",
-                    autoplay: !!this.autoplay || false,
-                    start: this.start || 0
-                }
-            });
-        }
+    getURL(videoID) {
+        const autoplay = this.autoplay ? '1' : '0';
+        return `https://www.youtube.com/embed/${videoID}?autoplay=1`;
     }
 
 });
