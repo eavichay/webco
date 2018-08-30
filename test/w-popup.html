@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>W-POPUP Demo</title>
+  <script src="../node_modules/slim-js/Slim.js"></script>
+  <script src="../components/w-popup.js"></script>
+  <style>
+    w-popup > span[slot="trigger"] {
+      font-size: 2rem;
+    }
+
+    w-popup > span[slot="trigger"][role="submenu"] {
+      position: relative;
+      display: inline-block;
+      font-size: 1.3rem;
+    }
+
+    w-popup w-popup {
+      display: inline-block;
+      top: -1.2rem;
+    }
+
+    w-popup > div[slot="content"] li:hover {
+      background: lightblue;
+    }
+
+    w-popup ul, w-popup li {
+      list-style-type: none;
+      margin: 2px;
+      padding: 0;
+      cursor: default;
+      font-size: 1.3rem;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+    }
+  </style>
+</head>
+<body>
+  <h1>Selection: none</h1>
+  <w-popup with-shadow>
+    <span slot="trigger">🚀</span>
+    <div slot="content">
+      <ul>
+        <li onmousedown="onitemclick(event)">Item 1</li>
+        <li onmousedown="onitemclick(event)">Item 2</li>
+        <li onmousedown="onitemclick(event)">Item 3</li>
+        <li onmousedown="onitemclick(event)">Item 4</li>
+        <li>
+          <w-popup with-shadow>
+            <span role="submenu" slot="trigger">More...</span>
+            <div slot="content">
+              <ul>
+                <li>Sub item 1</li>
+                <li>Sub item 2</li>
+                <w-popup with-shadow>More...
+                    <span role="submenu" slot="trigger">Submenu</span>
+                    <div slot="content">
+                      <ul>
+                        <li>Sub item 1</li>
+                        <li>Sub item 234455666</li>
+                      </ul>
+                    </div>
+                  </w-popup>
+              </ul>
+            </div>
+          </w-popup>
+        </li>
+        <li onmousedown="onitemclick(event)">Item 5</li>
+      </ul>
+    </div>
+  </w-popup>
+
+  <script>
+    function onitemclick (evt) {
+      document.querySelector('h1').textContent = 'Selection: ' + evt.target.textContent;
+    }
+  </script>
+</body>
+</html>
